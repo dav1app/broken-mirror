@@ -1,6 +1,13 @@
 # Bug Bounty
 
-Find any bugs on this endpoint: 
+## Overview
+Our service is designed to strengthen password security by preventing the usage of leaked and weak passwords. It ensures that users choose passwords that are not only robust but also have not been compromised in data breaches.
+
+## Endpoint Description
+This service provides an endpoint to validate passwords against a database of known leaked passwords and enforce strength requirements.
+
+## Endpoint Usage
+To use the service, make a POST request with a JSON payload containing the username and password:
 
 ```
 curl -X POST https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-ba8e141c-152f-46c2-9f1c-41dc67d7d55f/brokenmirror/brokenmirror \
@@ -44,3 +51,8 @@ Here are the error messages in the provided code:
 
 
 Any other error message can be considered a bug.
+
+## Security and Reliability
+ - Endpoint Safety: The endpoint is secure and does not pose inherent risks by its design.
+ - Scalability: Our deployment scales horizontally in a serverless environment, providing robustness against DDoS attacks targeting the request endpoint.
+
