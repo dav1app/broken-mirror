@@ -53,6 +53,8 @@ Here are the error messages in the provided code:
 Any other error message can be considered a bug.
 
 ## Security and Reliability
- - Endpoint Safety: The endpoint is secure and does not pose inherent risks by its design.
- - Scalability: Our deployment scales horizontally in a serverless environment, providing robustness against DDoS attacks targeting the request endpoint.
+ - The endpoint is secure and does not pose inherent risks by its design.
+ - There is not an admin panel for this solution. 
+ - Our deployment scales horizontally in a serverless environment, providing robustness against DDoS attacks targeting the request endpoint.
+ - Minor spelling/grammatic errors are not bugs unless they prevent the usage of the platform. 
 
