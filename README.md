@@ -1,5 +1,7 @@
 # Bug Bounty
 
+> :warning: Under no circunstances send real username or password that you use for services. You can use a known leaked password `123456789` and username `admin`.
+
 ## Overview
 Our service is designed to strengthen password security by preventing the usage of leaked and weak passwords. It ensures that users choose passwords that are not only robust but also have not been compromised in data breaches.
 
