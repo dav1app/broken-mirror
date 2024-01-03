@@ -58,3 +58,6 @@ Any other error message can be considered a bug.
  - Our deployment scales horizontally in a serverless environment, providing robustness against DDoS attacks targeting the request endpoint.
  - Minor spelling/grammatic errors are not bugs unless they prevent the usage of the platform. 
 
+## Resources
+ - Timeout: 8000ms
+ - Memory: 256mb
