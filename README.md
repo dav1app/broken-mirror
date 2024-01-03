@@ -61,3 +61,10 @@ Any other error message can be considered a bug.
 ## Resources
  - Timeout: 8000ms
  - Memory: 256mb
+
+## Prizes
+Payed using Bitcoin Lightning Network:
+ - Issues: 5.000 SATS (R$ 10) per issue.
+ - Bugs: 50.000 SATS (R$ 100) per bug.
+ - Critical bugs: 100.000 (R$ 200) per critical bug. 
+
