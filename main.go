@@ -7,7 +7,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strings"
 	"unicode/utf8"
@@ -15,13 +14,6 @@ import (
 
 // separator is a private use character (U+E000) used as a separator
 var separator = []byte{0xEE, 0x80, 0x80}
-
-func main() {
-	log.Printf("%+v", Main(map[string]interface{}{
-		"username": "test",
-		"password": "12345678",
-	}))
-}
 
 // Main is the entry point for the serverless function
 func Main(args map[string]interface{}) map[string]interface{} {
