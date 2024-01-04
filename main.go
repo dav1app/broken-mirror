@@ -2,13 +2,15 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
-	"io/ioutil"
+	"encoding/json"
+	"io"
 	"net/http"
 	"strings"
-	"encoding/json"
+	"time"
 	"unicode/utf8"
 )
 
@@ -56,14 +58,26 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	hashPrefix := hashedSHA1Password[:5] // First 5 chars
 	hashSuffix := hashedSHA1Password[5:] // Rest of the characters
 
-	resp, err := http.Get("https://api.pwnedpasswords.com/range/" + hashPrefix)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.pwnedpasswords.com/range/"+hashPrefix, nil)
 	if err != nil {
 		response["error"] = "unable to make request to pwnedpasswords"
 		return createHTTPResponse(response, 500)
 	}
+
+	client := http.DefaultClient
+	resp, err := client.Do(req)
+
+	if err != nil {
+		response["error"] = "unable to make request to pwnedpasswords"
+		return createHTTPResponse(response, 500)
+	}
+
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		response["error"] = "unable to read response from pwnedpasswords"
 		return createHTTPResponse(response, 500)
@@ -94,15 +108,15 @@ func createHTTPResponse(response map[string]interface{}, statusCode int) map[str
 	if err != nil {
 		// Handle JSON marshalling error
 		return map[string]interface{}{
-			"headers": map[string]interface{}{"Content-Type": "application/json"},
+			"headers":    map[string]interface{}{"Content-Type": "application/json"},
 			"statusCode": 400,
-			"body": "{\"error\":\"Internal server error\"}",
+			"body":       "{\"error\":\"Internal server error\"}",
 		}
 	}
 
 	return map[string]interface{}{
-		"headers": map[string]interface{}{"Content-Type": "application/json"},
+		"headers":    map[string]interface{}{"Content-Type": "application/json"},
 		"statusCode": statusCode,
-		"body": string(jsonBody),
+		"body":       string(jsonBody),
 	}
 }
