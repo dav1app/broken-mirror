@@ -5,10 +5,10 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"encoding/json"
 	"unicode/utf8"
 )
 
@@ -94,15 +94,15 @@ func createHTTPResponse(response map[string]interface{}, statusCode int) map[str
 	if err != nil {
 		// Handle JSON marshalling error
 		return map[string]interface{}{
-			"headers": map[string]interface{}{"Content-Type": "application/json"},
-			"statusCode": 400,
-			"body": "{\"error\":\"Internal server error\"}",
+			"headers":    map[string]interface{}{"Content-Type": "application/json"},
+			"statusCode": 500,
+			"body":       "{\"error\":\"Internal server error\"}",
 		}
 	}
 
 	return map[string]interface{}{
-		"headers": map[string]interface{}{"Content-Type": "application/json"},
+		"headers":    map[string]interface{}{"Content-Type": "application/json"},
 		"statusCode": statusCode,
-		"body": string(jsonBody),
+		"body":       string(jsonBody),
 	}
 }
