@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"strings"
 	"encoding/json"
+	"unicode/utf8"
 )
 
 // separator is a private use character (U+E000) used as a separator
@@ -26,12 +27,12 @@ func Main(args map[string]interface{}) map[string]interface{} {
 		return createHTTPResponse(response, 400)
 	}
 
-	if len(password) < 8 {
+	if len(password) < 8 || utf8.RuneCountInString(password) < 8 {
 		response["error"] = "password must be at least 8 characters long"
 		return createHTTPResponse(response, 400)
 	}
 
-	if len(password) > 64 {
+	if len(password) > 64 || utf8.RuneCountInString(password) > 64 {
 		response["error"] = "password must be at most 64 characters long"
 		return createHTTPResponse(response, 400)
 	}
