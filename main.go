@@ -5,10 +5,10 @@ import (
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strings"
-	"encoding/json"
 	"unicode/utf8"
 )
 
@@ -64,7 +64,7 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+	if err != nil || resp.StatusCode != http.StatusOK {
 		response["error"] = "unable to read response from pwnedpasswords"
 		return createHTTPResponse(response, 500)
 	}
@@ -94,15 +94,15 @@ func createHTTPResponse(response map[string]interface{}, statusCode int) map[str
 	if err != nil {
 		// Handle JSON marshalling error
 		return map[string]interface{}{
-			"headers": map[string]interface{}{"Content-Type": "application/json"},
+			"headers":    map[string]interface{}{"Content-Type": "application/json"},
 			"statusCode": 400,
-			"body": "{\"error\":\"Internal server error\"}",
+			"body":       "{\"error\":\"Internal server error\"}",
 		}
 	}
 
 	return map[string]interface{}{
-		"headers": map[string]interface{}{"Content-Type": "application/json"},
+		"headers":    map[string]interface{}{"Content-Type": "application/json"},
 		"statusCode": statusCode,
-		"body": string(jsonBody),
+		"body":       string(jsonBody),
 	}
 }
