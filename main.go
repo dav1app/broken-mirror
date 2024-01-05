@@ -78,7 +78,7 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
-	if err != nil {
+	if err != nil || resp.StatusCode != http.StatusOK {
 		response["error"] = "unable to read response from pwnedpasswords"
 		return createHTTPResponse(response, 500)
 	}
