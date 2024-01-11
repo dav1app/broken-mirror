@@ -95,7 +95,7 @@ func createHTTPResponse(response map[string]interface{}, statusCode int) map[str
 		// Handle JSON marshalling error
 		return map[string]interface{}{
 			"headers":    map[string]interface{}{"Content-Type": "application/json"},
-			"statusCode": 400,
+			"statusCode": 500,
 			"body":       "{\"error\":\"Internal server error\"}",
 		}
 	}
