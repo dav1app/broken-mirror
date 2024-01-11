@@ -2,13 +2,15 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha1"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
+	"time"
 	"unicode/utf8"
 )
 
@@ -56,14 +58,26 @@ func Main(args map[string]interface{}) map[string]interface{} {
 	hashPrefix := hashedSHA1Password[:5] // First 5 chars
 	hashSuffix := hashedSHA1Password[5:] // Rest of the characters
 
-	resp, err := http.Get("https://api.pwnedpasswords.com/range/" + hashPrefix)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, "https://api.pwnedpasswords.com/range/"+hashPrefix, nil)
 	if err != nil {
 		response["error"] = "unable to make request to pwnedpasswords"
 		return createHTTPResponse(response, 500)
 	}
+
+	client := http.DefaultClient
+	resp, err := client.Do(req)
+
+	if err != nil {
+		response["error"] = "unable to make request to pwnedpasswords"
+		return createHTTPResponse(response, 500)
+	}
+
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
+	body, err := io.ReadAll(resp.Body)
 	if err != nil || resp.StatusCode != http.StatusOK {
 		response["error"] = "unable to read response from pwnedpasswords"
 		return createHTTPResponse(response, 500)
